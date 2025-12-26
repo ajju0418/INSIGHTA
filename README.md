@@ -1,4 +1,4 @@
-# INSIGHTA
+# NEXURA
 *Personal Life Analytics & Habit Tracking Platform*
 
 ## 🎯 Core Concept
