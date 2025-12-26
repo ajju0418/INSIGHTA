@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { HUDCard } from '@/components/HUDCard'
-import { Target, Zap, Brain, Wallet, Activity, Plus, CheckCircle2, TrendingUp, Award, Calendar, Flame, Trophy, ArrowRight } from 'lucide-react'
+import { Terminal, Target, Zap, Brain, Wallet, Activity, Plus, CheckCircle2, TrendingUp, Award, Calendar, Flame, Trophy, ArrowRight } from 'lucide-react'
 
 interface Goal {
     id: string
@@ -30,8 +30,6 @@ export function Goals() {
 
     const completedCount = goals.filter(isComplete).length
     const totalProgress = Math.round(goals.reduce((acc, g) => acc + getProgress(g), 0) / goals.length)
-    const habitsGoals = goals.filter(g => g.type === 'habit')
-    const budgetGoals = goals.filter(g => g.type === 'budget')
 
     const achievements = [
         { name: '7-Day Streak', icon: Flame, unlocked: true },
@@ -41,7 +39,7 @@ export function Goals() {
     ]
 
     return (
-        <div className="min-h-screen bg-[#050505] text-slate-200 font-sans selection:bg-cyan-500/30 overflow-x-hidden pt-8 pb-24">
+        <div className="min-h-screen bg-[#050505] text-slate-200 font-sans selection:bg-cyan-500/30 overflow-x-hidden">
 
             {/* Tech Background Grid */}
             <div className="fixed inset-0 pointer-events-none opacity-20"
@@ -49,25 +47,36 @@ export function Goals() {
             />
             <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,#050505_100%)]" />
 
-            <div className="relative z-10 max-w-7xl mx-auto px-6">
+            <div className="relative z-10 max-w-7xl mx-auto px-6 pt-8 pb-24">
 
                 {/* Header */}
-                <div className="flex items-center justify-between mb-10 pb-6 border-b border-slate-800">
-                    <div className="flex items-center gap-4">
-                        <div className="p-4 bg-emerald-950/30 border border-emerald-500/30 rounded-lg">
-                            <Target className="text-emerald-400" size={28} />
-                        </div>
-                        <div>
-                            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">Your Goals</h1>
-                            <p className="text-lg text-slate-400">{completedCount} of {goals.length} goals completed this period</p>
+                <div className="mb-10 pt-4 pb-6 border-b border-slate-800">
+                    <div className="flex items-center gap-3 mb-4">
+                        <Terminal size={20} className="text-cyan-500" />
+                        <span className="text-base font-mono text-cyan-500 tracking-[0.3em] font-bold uppercase">SYSTEM.ONLINE</span>
+                        <div className="flex gap-1 ml-2">
+                            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+                            <div className="w-2 h-2 bg-emerald-500/30 rounded-full" />
+                            <div className="w-2 h-2 bg-emerald-500/30 rounded-full" />
                         </div>
                     </div>
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                            <div className="p-4 bg-emerald-950/30 border border-emerald-500/30 rounded-lg">
+                                <Target className="text-emerald-400" size={28} />
+                            </div>
+                            <div>
+                                <h1 className="text-4xl md:text-5xl font-heading font-bold text-white mb-2">Your Goals</h1>
+                                <p className="text-lg text-slate-500">{completedCount} of {goals.length} goals completed this period</p>
+                            </div>
+                        </div>
 
-                    {/* Add Goal Button */}
-                    <button className="flex items-center gap-2 px-6 py-4 bg-emerald-600 hover:bg-emerald-500 text-white transition-all rounded-xl text-lg font-semibold shadow-lg shadow-emerald-500/20">
-                        <Plus size={20} />
-                        Add Goal
-                    </button>
+                        {/* Add Goal Button */}
+                        <button className="flex items-center gap-2 px-6 py-4 bg-emerald-600 hover:bg-emerald-500 text-white transition-all rounded-xl text-lg font-semibold shadow-lg shadow-emerald-500/20">
+                            <Plus size={20} />
+                            Add Goal
+                        </button>
+                    </div>
                 </div>
 
                 {/* Stats Overview */}
@@ -123,7 +132,7 @@ export function Goals() {
                             return (
                                 <HUDCard
                                     key={goal.id}
-                                    className={`p-6 transition-all ${complete ? 'border-emerald-500/30 bg-emerald-950/10' : 'hover:border-slate-700'}`}
+                                    className={`p-6 transition-all ${complete ? 'border-emerald-500/30 bg-emerald-950/10' : ''}`}
                                 >
                                     <div className="flex items-start gap-5">
                                         {/* Icon */}
@@ -143,8 +152,8 @@ export function Goals() {
                                                         {goal.name}
                                                     </span>
                                                     <span className={`text-sm px-3 py-1 rounded-lg font-medium ${goal.type === 'habit' ? 'bg-cyan-500/10 text-cyan-400' :
-                                                            goal.type === 'budget' ? 'bg-fuchsia-500/10 text-fuchsia-400' :
-                                                                'bg-amber-500/10 text-amber-400'
+                                                        goal.type === 'budget' ? 'bg-fuchsia-500/10 text-fuchsia-400' :
+                                                            'bg-amber-500/10 text-amber-400'
                                                         }`}>
                                                         {goal.type}
                                                     </span>
@@ -188,8 +197,8 @@ export function Goals() {
                                     <div
                                         key={i}
                                         className={`flex flex-col items-center p-4 rounded-xl border transition-all ${a.unlocked
-                                                ? 'border-amber-500/30 bg-amber-500/10'
-                                                : 'border-slate-800 bg-slate-900/30 opacity-50'
+                                            ? 'border-amber-500/30 bg-amber-500/10'
+                                            : 'border-slate-800 bg-slate-900/50 opacity-50'
                                             }`}
                                     >
                                         <a.icon size={28} className={a.unlocked ? 'text-amber-400' : 'text-slate-600'} />
@@ -206,15 +215,15 @@ export function Goals() {
                             <div className="space-y-3">
                                 <button className="w-full flex items-center justify-between p-4 bg-slate-900/50 border border-slate-800 rounded-lg hover:border-cyan-500/50 transition-all group">
                                     <span className="text-base text-slate-300">Create Habit Goal</span>
-                                    <ArrowRight size={18} className="text-slate-600 group-hover:text-cyan-400 transition-colors" />
+                                    <ArrowRight size={18} className="text-slate-500 group-hover:text-cyan-400 transition-colors" />
                                 </button>
                                 <button className="w-full flex items-center justify-between p-4 bg-slate-900/50 border border-slate-800 rounded-lg hover:border-cyan-500/50 transition-all group">
                                     <span className="text-base text-slate-300">Set Budget Limit</span>
-                                    <ArrowRight size={18} className="text-slate-600 group-hover:text-cyan-400 transition-colors" />
+                                    <ArrowRight size={18} className="text-slate-500 group-hover:text-cyan-400 transition-colors" />
                                 </button>
                                 <button className="w-full flex items-center justify-between p-4 bg-slate-900/50 border border-slate-800 rounded-lg hover:border-cyan-500/50 transition-all group">
                                     <span className="text-base text-slate-300">View All History</span>
-                                    <ArrowRight size={18} className="text-slate-600 group-hover:text-cyan-400 transition-colors" />
+                                    <ArrowRight size={18} className="text-slate-500 group-hover:text-cyan-400 transition-colors" />
                                 </button>
                             </div>
                         </HUDCard>

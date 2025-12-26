@@ -14,9 +14,7 @@ const data = [
 export function PerformanceRadar() {
     return (
         <div className="w-full h-[380px] relative">
-            {/* Tech Grid Overlay (Visual Only) */}
             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
-
             <ResponsiveContainer width="100%" height="100%">
                 <RadarChart cx="50%" cy="50%" outerRadius="85%" data={data}>
                     <PolarGrid stroke="#334155" strokeDasharray="3 3" />

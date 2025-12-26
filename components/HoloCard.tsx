@@ -7,9 +7,10 @@ interface HoloCardProps {
     children: ReactNode
     className?: string
     noPadding?: boolean
+    title?: string
 }
 
-export function HoloCard({ children, className = '', noPadding = false }: HoloCardProps) {
+export function HoloCard({ children, className = '', noPadding = false, title }: HoloCardProps) {
     const ref = useRef<HTMLDivElement>(null)
 
     // Motion values for tilt effect
@@ -75,8 +76,16 @@ export function HoloCard({ children, className = '', noPadding = false }: HoloCa
                     className="absolute inset-0 pointer-events-none z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 />
 
+                {/* Title Tag */}
+                {title && (
+                    <div className="absolute top-4 left-6 z-20 flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
+                        <span className="text-xs font-bold font-mono tracking-widest text-cyan-400 uppercase opacity-80">{title}</span>
+                    </div>
+                )}
+
                 {/* Content */}
-                <div className="relative z-10 h-full">
+                <div className={`relative z-10 h-full ${title ? 'pt-6' : ''}`}>
                     {children}
                 </div>
             </div>

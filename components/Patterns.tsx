@@ -1,9 +1,8 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { HUDCard } from '@/components/HUDCard'
-import { Terminal, Activity, Zap, TrendingUp, Brain, Clock, AlertTriangle, Lightbulb, CheckCircle2, DollarSign, GripHorizontal } from 'lucide-react'
+import { Terminal, Activity, Zap, TrendingUp, Brain, Clock, AlertTriangle, Lightbulb, CheckCircle2, DollarSign } from 'lucide-react'
 
 export function Patterns() {
   const [selectedPeriod, setSelectedPeriod] = useState('today')
@@ -33,7 +32,7 @@ export function Patterns() {
   ]
 
   return (
-    <div className="min-h-screen bg-[#050505] text-slate-200 font-sans selection:bg-cyan-500/30 overflow-x-hidden pt-8 pb-24">
+    <div className="min-h-screen bg-[#050505] text-slate-200 font-sans selection:bg-cyan-500/30 overflow-x-hidden">
 
       {/* Tech Background Grid */}
       <div className="fixed inset-0 pointer-events-none opacity-20"
@@ -41,56 +40,67 @@ export function Patterns() {
       />
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,#050505_100%)]" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-8 pb-24">
 
         {/* Header */}
-        <div className="flex items-center justify-between mb-10 border-b border-slate-800 pb-6">
-          <div className="flex items-center gap-4">
-            <div className="p-4 bg-cyan-950/30 border border-cyan-500/30">
-              <Brain className="text-cyan-400" size={28} />
-            </div>
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-white tracking-wide mb-1">Pattern Recognition</h1>
-              <div className="flex items-center gap-2 text-sm text-cyan-500">
-                <span className="w-2 h-2 bg-cyan-500 rounded-full animate-pulse" />
-                Analysis Active • Deep Learning Model
-              </div>
+        <div className="mb-10 pt-4 pb-6 border-b border-slate-800">
+          <div className="flex items-center gap-3 mb-4">
+            <Terminal size={20} className="text-cyan-500" />
+            <span className="text-base font-mono text-cyan-500 tracking-[0.3em] font-bold uppercase">SYSTEM.ONLINE</span>
+            <div className="flex gap-1 ml-2">
+              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+              <div className="w-2 h-2 bg-emerald-500/30 rounded-full" />
+              <div className="w-2 h-2 bg-emerald-500/30 rounded-full" />
             </div>
           </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="p-4 bg-cyan-950/30 border border-cyan-500/30 rounded-lg">
+                <Brain className="text-cyan-400" size={28} />
+              </div>
+              <div>
+                <h1 className="text-4xl md:text-5xl font-heading font-bold text-white mb-2">Pattern Recognition</h1>
+                <div className="flex items-center gap-2 text-base text-slate-500">
+                  <span className="w-2 h-2 bg-cyan-500 rounded-full animate-pulse" />
+                  Analysis Active • Deep Learning Model
+                </div>
+              </div>
+            </div>
 
-          {/* Period Selector */}
-          <div className="flex gap-1 bg-slate-900/50 p-1.5 border border-slate-800 rounded-lg">
+            {/* Period Selector */}
+            <div className="flex gap-1 bg-slate-900/50 p-1.5 border border-slate-800 rounded-lg">
             {['Today', 'Week', 'Month'].map((period) => (
               <button
                 key={period}
                 onClick={() => setSelectedPeriod(period.toLowerCase())}
                 className={`px-5 py-2.5 text-sm font-medium rounded-md transition-all ${selectedPeriod === period.toLowerCase()
-                    ? 'bg-cyan-600 text-white'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  ? 'bg-cyan-600 text-white'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
                   }`}
               >
                 {period}
               </button>
             ))}
+            </div>
           </div>
         </div>
 
         {/* Metrics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {behaviorMetrics.map((metric) => (
-            <HUDCard key={metric.id} className="p-6">
+            <HUDCard key={metric.id} className="p-5">
               <div className="flex justify-between items-start mb-4">
                 <span className="text-sm text-slate-400">{metric.label}</span>
                 <metric.icon size={18} className={metric.color} />
               </div>
 
               <div className="flex items-end gap-3 mb-3">
-                <span className="text-5xl font-bold text-white">{metric.value}</span>
-                <span className={`text-lg font-semibold mb-1 ${metric.color}`}>{metric.trend}</span>
+                <span className="text-4xl font-bold text-white">{metric.value}</span>
+                <span className={`text-base font-semibold mb-1 ${metric.color}`}>{metric.trend}</span>
               </div>
 
               <div className="w-full bg-slate-800 h-2 rounded-full mb-3">
-                <div className={`h-full rounded-full ${metric.color.replace('text-', 'bg-')} opacity-70`} style={{ width: `${metric.value}%` }} />
+                <div className={`h-full rounded-full ${metric.color.replace('text-', 'bg-')}`} style={{ width: `${metric.value}%` }} />
               </div>
 
               <span className="text-sm text-slate-500">{metric.description}</span>
@@ -99,10 +109,10 @@ export function Patterns() {
         </div>
 
         {/* Timeline */}
-        <HUDCard title="Today's Timeline" className="mb-10 overflow-hidden p-6">
+        <HUDCard title="Today's Timeline" className="mb-8 p-6 overflow-hidden">
           <div className="relative pt-6 pb-4 overflow-x-auto">
             <div className="min-w-[900px] px-4 relative">
-              <div className="absolute top-[4rem] left-0 right-0 h-0.5 bg-gradient-to-r from-slate-800 via-cyan-900/50 to-slate-800" />
+              <div className="absolute top-[4rem] left-0 right-0 h-0.5 bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800" />
 
               <div className="flex justify-between items-start relative">
                 {timelineEvents.map((event) => (
@@ -126,8 +136,8 @@ export function Patterns() {
 
                     {/* Event Card */}
                     <div className={`p-4 border min-w-[130px] transition-all text-center ${hoveredEvent === event.event
-                        ? 'border-cyan-500 bg-cyan-950/30 scale-105'
-                        : 'border-slate-800 bg-slate-900/50'
+                      ? 'border-cyan-500 bg-cyan-950/30 scale-105'
+                      : 'border-slate-800 bg-slate-900/50'
                       }`}>
                       <event.icon size={20} className={`mx-auto mb-2 ${event.color.replace('bg-', 'text-')}`} />
                       <div className="text-base font-semibold text-white mb-1">{event.event}</div>
@@ -148,13 +158,13 @@ export function Patterns() {
           AI Predictions
         </h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {insights.map((insight, i) => (
             <HUDCard key={i} className="p-6 hover:border-cyan-500/30 transition-colors">
               <div className="flex items-start justify-between mb-4">
                 <div className={`p-2 border rounded-lg ${insight.type === 'OPTIMAL' ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400' :
-                    insight.type === 'WARNING' ? 'border-amber-500/30 bg-amber-500/10 text-amber-400' :
-                      'border-purple-500/30 bg-purple-500/10 text-purple-400'
+                  insight.type === 'WARNING' ? 'border-amber-500/30 bg-amber-500/10 text-amber-400' :
+                    'border-purple-500/30 bg-purple-500/10 text-purple-400'
                   }`}>
                   {insight.type === 'OPTIMAL' ? <Zap size={18} /> :
                     insight.type === 'WARNING' ? <AlertTriangle size={18} /> :
@@ -169,8 +179,8 @@ export function Patterns() {
               <div className="w-full bg-slate-900 h-1.5 rounded-full">
                 <div
                   className={`h-full rounded-full ${insight.type === 'OPTIMAL' ? 'bg-emerald-500' :
-                      insight.type === 'WARNING' ? 'bg-amber-500' :
-                        'bg-purple-500'
+                    insight.type === 'WARNING' ? 'bg-amber-500' :
+                      'bg-purple-500'
                     }`}
                   style={{ width: `${insight.confidence}%` }}
                 />

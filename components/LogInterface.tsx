@@ -57,7 +57,7 @@ export function LogInterface() {
               <PenTool className="text-cyan-400" size={28} />
             </div>
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">Quick Log</h1>
+              <h1 className="text-4xl md:text-5xl font-heading font-bold text-white mb-2">Quick Log</h1>
               <p className="text-lg text-slate-400">Track your habits and expenses in one place</p>
             </div>
           </div>
@@ -89,8 +89,8 @@ export function LogInterface() {
                   key={type}
                   onClick={() => setMode(type as any)}
                   className={`flex-1 py-5 px-6 text-xl font-semibold rounded-xl transition-all ${mode === type
-                      ? 'bg-cyan-600 text-white shadow-lg shadow-cyan-500/20'
-                      : 'bg-slate-900/50 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
+                    ? 'bg-cyan-600 text-white shadow-lg shadow-cyan-500/20'
+                    : 'bg-slate-900/50 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
                     }`}
                 >
                   {type === 'habit' ? '✓ Log Habit' : '₹ Log Expense'}
@@ -109,8 +109,8 @@ export function LogInterface() {
                         key={habit.id}
                         onClick={() => setSelectedHabit(habit.id)}
                         className={`flex items-center gap-4 p-6 border rounded-xl transition-all ${selectedHabit === habit.id
-                            ? 'border-emerald-500 bg-emerald-950/20 scale-[1.02]'
-                            : 'border-slate-800 bg-slate-900/30 hover:border-slate-700 hover:bg-slate-900/50'
+                          ? 'border-emerald-500 bg-emerald-950/20 scale-[1.02]'
+                          : 'border-slate-800 bg-slate-900/30 hover:border-slate-700 hover:bg-slate-900/50'
                           }`}
                       >
                         <div className={`p-3 rounded-lg ${selectedHabit === habit.id ? 'bg-emerald-500' : 'bg-slate-800'}`}>
@@ -157,8 +157,8 @@ export function LogInterface() {
                             key={cat.id}
                             onClick={() => setCategory(cat.id)}
                             className={`flex flex-col items-center gap-3 p-5 border rounded-xl transition-all ${category === cat.id
-                                ? 'border-cyan-500 bg-cyan-950/20 text-cyan-400 scale-[1.02]'
-                                : 'border-slate-800 bg-slate-900/30 text-slate-400 hover:border-slate-700'
+                              ? 'border-cyan-500 bg-cyan-950/20 text-cyan-400 scale-[1.02]'
+                              : 'border-slate-800 bg-slate-900/30 text-slate-400 hover:border-slate-700'
                               }`}
                           >
                             <cat.icon size={28} />

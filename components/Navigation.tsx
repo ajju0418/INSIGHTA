@@ -1,6 +1,8 @@
 'use client'
 
+import React from 'react'
 import { Home, PenTool, BarChart3, Target } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 interface NavigationProps {
   currentPage: 'home' | 'log' | 'patterns' | 'goals'
@@ -16,9 +18,15 @@ export function Navigation({ currentPage, onNavigate }: NavigationProps) {
   ]
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#0a0a0a]/95 backdrop-blur-lg border-t border-slate-800/80">
-      <div className="max-w-md mx-auto px-6">
-        <div className="flex items-center justify-around py-2">
+    <div className="fixed bottom-6 left-0 right-0 z-50 flex justify-center pointer-events-none">
+      <div className="pointer-events-auto">
+        <nav className="
+          relative px-2 py-2 flex items-center gap-2
+          bg-black/40 backdrop-blur-2xl
+          border border-white/10
+          rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.5)]
+          ring-1 ring-white/5
+        ">
           {navItems.map((item) => {
             const isActive = currentPage === item.id
             const IconComponent = item.icon
@@ -27,41 +35,35 @@ export function Navigation({ currentPage, onNavigate }: NavigationProps) {
               <button
                 key={item.id}
                 onClick={() => onNavigate(item.id)}
-                className="relative flex flex-col items-center justify-center py-2 px-4 transition-all duration-200 group min-w-[70px]"
+                className="relative z-10 px-6 py-3 flex items-center justify-center transition-colors group"
               >
-                {/* Active Background Pill */}
                 {isActive && (
-                  <div className="absolute inset-x-2 top-1 bottom-1 bg-cyan-500/10 rounded-xl border border-cyan-500/20" />
+                  <motion.div
+                    layoutId="active-pill"
+                    className="absolute inset-0 bg-gradient-to-t from-cyan-500/20 to-cyan-400/10 rounded-full border border-cyan-500/20 shadow-[0_0_15px_rgba(34,211,238,0.3)]"
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  />
                 )}
 
-                <div className="relative z-10 flex flex-col items-center">
+                <div className="relative z-20 flex flex-col items-center gap-1">
                   <IconComponent
-                    size={22}
-                    className={`mb-1 transition-all duration-200 ${isActive
-                        ? 'text-cyan-400'
-                        : 'text-slate-500 group-hover:text-slate-300'
+                    size={20}
+                    className={`transition-colors duration-200 ${isActive ? 'text-cyan-400' : 'text-slate-400 group-hover:text-slate-200'
                       }`}
                   />
-                  <span className={`text-[10px] font-medium tracking-wide transition-all duration-200 ${isActive
-                      ? 'text-cyan-400'
-                      : 'text-slate-600 group-hover:text-slate-400'
-                    }`}>
-                    {item.label}
-                  </span>
+                  {isActive && (
+                    <motion.div
+                      initial={{ width: 0, opacity: 0 }}
+                      animate={{ width: 4, opacity: 1 }}
+                      className="h-1 bg-cyan-400 rounded-full absolute -bottom-1 shadow-[0_0_8px_rgba(34,211,238,0.8)]"
+                    />
+                  )}
                 </div>
-
-                {/* Active Indicator Dot */}
-                {isActive && (
-                  <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-cyan-400 rounded-full shadow-[0_0_6px_rgba(34,211,238,0.6)]" />
-                )}
               </button>
             )
           })}
-        </div>
+        </nav>
       </div>
-
-      {/* Safe area for mobile */}
-      <div className="h-safe-area-inset-bottom bg-[#0a0a0a]" />
-    </nav>
+    </div>
   )
 }

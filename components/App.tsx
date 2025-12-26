@@ -6,6 +6,7 @@ import { LogInterface } from '@/components/LogInterface'
 import { Patterns } from '@/components/Patterns'
 import { Goals } from '@/components/Goals'
 import { Navigation } from '@/components/Navigation'
+import { SettingsLink } from '@/components/settings/SettingsLink'
 
 export function App() {
   const [currentPage, setCurrentPage] = useState<'home' | 'log' | 'patterns' | 'goals'>('home')
@@ -28,6 +29,7 @@ export function App() {
   return (
     <>
       {renderPage()}
+      <SettingsLink />
       <Navigation currentPage={currentPage} onNavigate={setCurrentPage} />
     </>
   )

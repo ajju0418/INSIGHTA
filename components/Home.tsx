@@ -23,17 +23,11 @@ export function Home() {
 
   return (
     <div className="min-h-screen bg-[#050505] text-slate-200 font-sans selection:bg-cyan-500/30 overflow-x-hidden">
-
-      {/* Tech Background Grid */}
       <div className="fixed inset-0 pointer-events-none opacity-20"
         style={{ backgroundImage: 'linear-gradient(#1e293b 1px, transparent 1px), linear-gradient(90deg, #1e293b 1px, transparent 1px)', backgroundSize: '40px 40px' }}
       />
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,#050505_100%)]" />
-
-      {/* Main Interface */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 pt-8 pb-24">
-
-        {/* Header with SYSTEM.ONLINE style - Bigger */}
         <div className="mb-10 pt-4 pb-6 border-b border-slate-800">
           <div className="flex items-center gap-3 mb-4">
             <Terminal size={20} className="text-cyan-500" />
@@ -44,16 +38,12 @@ export function Home() {
               <div className="w-2 h-2 bg-emerald-500/30 rounded-full" />
             </div>
           </div>
-          <h1 className="text-5xl md:text-6xl font-mono font-bold tracking-tight text-white mb-3">
+          <h1 className="text-5xl md:text-6xl font-heading font-bold tracking-tight text-white mb-3">
             {greeting}
           </h1>
           <div className="text-lg font-mono text-slate-500 tracking-widest">{currentDate} // ID: ALEX-01</div>
         </div>
-
-        {/* Main Grid - Performance & Habits First */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
-
-          {/* 1. Radar Analysis */}
           <div className="lg:col-span-5">
             <HUDCard title="Performance Overview" className="h-full min-h-[500px] p-6">
               <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-800">
@@ -64,7 +54,6 @@ export function Home() {
                 <span className="text-base text-slate-500">Auto-refresh</span>
               </div>
               <PerformanceRadar />
-
               <div className="mt-6 grid grid-cols-2 gap-4">
                 <div className="bg-slate-900/50 p-5 border border-slate-800 rounded-lg">
                   <div className="text-base text-slate-500 mb-2">Top Score</div>
@@ -77,16 +66,12 @@ export function Home() {
               </div>
             </HUDCard>
           </div>
-
-          {/* 2. Daily Habits */}
           <div className="lg:col-span-7">
             <HUDCard title="Today's Habits" className="h-full p-6">
               <DailyNexus />
             </HUDCard>
           </div>
         </div>
-
-        {/* Quick Stats Row - Below Performance & Habits */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           <HUDCard className="p-5">
             <div className="flex items-center justify-between">
@@ -125,14 +110,11 @@ export function Home() {
             </div>
           </HUDCard>
         </div>
-
-        {/* 3. Recent Expenses */}
         <div>
           <HUDCard title="Recent Transactions" className="p-6">
             <RecentExpenses />
           </HUDCard>
         </div>
-
       </div>
     </div>
   )

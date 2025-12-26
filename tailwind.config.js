@@ -26,7 +26,8 @@ module.exports = {
         }
       },
       fontFamily: {
-        sans: ['Inter Tight', 'sans-serif']
+        sans: ['var(--font-outfit)', 'sans-serif'],
+        heading: ['var(--font-space)', 'sans-serif'],
       }
     },
   },

@@ -1,7 +1,20 @@
 import './globals.css'
+import { Space_Grotesk, Outfit } from 'next/font/google'
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-space',
+  display: 'swap',
+})
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-outfit',
+  display: 'swap',
+})
 
 export const metadata = {
-  title: 'INSIGHTA | Behavior Intelligence',
+  title: 'NEXURA | Behavior Intelligence',
   description: 'A quiet, intelligent personal system',
 }
 
@@ -11,8 +24,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" className={`${spaceGrotesk.variable} ${outfit.variable}`}>
+      <body className={outfit.className}>
         {children}
       </body>
     </html>
