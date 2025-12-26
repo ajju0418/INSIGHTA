@@ -1,272 +1,487 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { HUDCard } from '@/components/HUDCard'
-import Link from 'next/link'
-import { Brain, Sparkles, User, Wallet } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import Image from 'next/image'
+import { 
+  User, Mail, Lock, Target, Brain, Zap, Heart, 
+  DollarSign, Clock, Coffee, Moon, Book, Activity,
+  ChevronRight, ChevronLeft, CheckCircle2, ArrowRight
+} from 'lucide-react'
 
-type SignupStep = 'profile' | 'habits' | 'finances' | 'summary'
+interface UserProfile {
+  name: string
+  email: string
+  password: string
+  age: number
+  lifeAreas: {
+    wellness: number
+    productivity: number
+    finance: number
+    relationships: number
+    learning: number
+    sleep: number
+  }
+  primaryGoals: string[]
+  currentHabits: string[]
+  budget: number
+  wakeTime: string
+  bedTime: string
+  aiPersonality: 'supportive' | 'challenging' | 'analytical'
+}
+
+const STEPS = [
+  { id: 'basic', title: 'Profile', icon: User },
+  { id: 'assessment', title: 'Assessment', icon: Brain },
+  { id: 'goals', title: 'Goals', icon: Target },
+  { id: 'habits', title: 'Habits', icon: Activity },
+  { id: 'preferences', title: 'Preferences', icon: Zap },
+  { id: 'complete', title: 'Complete', icon: CheckCircle2 }
+]
+
+const LIFE_AREAS = [
+  { key: 'wellness', label: 'Physical Health', icon: Heart, color: 'text-emerald-400' },
+  { key: 'productivity', label: 'Work Performance', icon: Zap, color: 'text-cyan-400' },
+  { key: 'finance', label: 'Financial Health', icon: DollarSign, color: 'text-fuchsia-400' },
+  { key: 'relationships', label: 'Social Life', icon: User, color: 'text-amber-400' },
+  { key: 'learning', label: 'Personal Growth', icon: Book, color: 'text-purple-400' },
+  { key: 'sleep', label: 'Sleep Quality', icon: Moon, color: 'text-indigo-400' }
+]
+
+const GOALS = [
+  'Improve daily exercise routine', 'Better financial management', 'Enhance work productivity',
+  'Improve sleep schedule', 'Learn new skills', 'Reduce stress levels',
+  'Build stronger relationships', 'Eat healthier meals', 'Save more money', 'Read more books'
+]
+
+const HABITS = [
+  'Morning meditation', 'Regular exercise', 'Daily reading', 'Expense tracking',
+  'Early bedtime', 'Healthy eating', 'Time blocking', 'Gratitude journaling',
+  'Skill practice', 'Social connections'
+]
 
 export default function SignupPage() {
-  const [step, setStep] = useState<SignupStep>('profile')
-  const [name, setName] = useState('')
-  const [role, setRole] = useState('')
-  const [goal, setGoal] = useState('')
-  const [energyPattern, setEnergyPattern] = useState('')
-  const [moneyFeeling, setMoneyFeeling] = useState('')
-  const [spendStyle, setSpendStyle] = useState('')
+  const [currentStep, setCurrentStep] = useState(0)
+  const [profile, setProfile] = useState<UserProfile>({
+    name: '', email: '', password: '', age: 25,
+    lifeAreas: { wellness: 5, productivity: 5, finance: 5, relationships: 5, learning: 5, sleep: 5 },
+    primaryGoals: [], currentHabits: [],
+    budget: 15000, wakeTime: '07:00', bedTime: '23:00', aiPersonality: 'supportive'
+  })
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
-  const canContinue =
-    (step === 'profile' && name.trim().length > 1 && role.trim().length > 1) ||
-    (step === 'habits' && goal.trim().length > 1 && energyPattern.trim().length > 1) ||
-    (step === 'finances' && moneyFeeling.trim().length > 1 && spendStyle.trim().length > 1) ||
-    step === 'summary'
-
-  const suggestedId = useMemo(() => {
-    const base = name.trim() ? name.trim().split(' ')[0].toUpperCase() : 'PILOT'
-    const tag =
-      goal.toLowerCase().includes('debt') || goal.toLowerCase().includes('money')
-        ? 'ALPHA'
-        : goal.toLowerCase().includes('health') || goal.toLowerCase().includes('fitness')
-        ? 'VITAL'
-        : goal.toLowerCase().includes('focus') || goal.toLowerCase().includes('study')
-        ? 'FOCUS'
-        : 'NEX'
-    return `${tag}-${base}-01`
-  }, [name, goal])
-
-  const primaryRecommendation = useMemo(() => {
-    if (energyPattern.toLowerCase().includes('night') || energyPattern.toLowerCase().includes('late')) {
-      return 'Night-shift protocol: anchor two habits after 9PM and keep mornings friction-free.'
-    }
-    if (energyPattern.toLowerCase().includes('morning')) {
-      return 'Morning-focus protocol: stack your highest-value habits before noon with low-noise evenings.'
-    }
-    if (goal.toLowerCase().includes('savings') || goal.toLowerCase().includes('wealth')) {
-      return 'Wealth-focus protocol: set a daily spend ceiling and auto-review each night for leaks.'
-    }
-    return 'Balanced protocol: start with one health habit, one focus habit, and one money check-in.'
-  }, [energyPattern, goal])
-
-  const spendInsight = useMemo(() => {
-    if (spendStyle.toLowerCase().includes('impulse') || spendStyle.toLowerCase().includes('random')) {
-      return 'Impulse control: redirect one weekly impulse purchase into a visible savings goal.'
-    }
-    if (spendStyle.toLowerCase().includes('planned') || spendStyle.toLowerCase().includes('budget')) {
-      return 'Optimization: introduce a weekly audit to tune your categories and free up 5–10%.'
-    }
-    return 'Observation: for the first week, simply log everything to let NEXURA learn your pattern.'
-  }, [spendStyle])
-
-  const handleNext = () => {
-    if (!canContinue) return
-    if (step === 'profile') setStep('habits')
-    else if (step === 'habits') setStep('finances')
-    else if (step === 'finances') setStep('summary')
+  const updateProfile = (updates: Partial<UserProfile>) => {
+    setProfile(prev => ({ ...prev, ...updates }))
   }
 
-  const handleBack = () => {
-    if (step === 'habits') setStep('profile')
-    else if (step === 'finances') setStep('habits')
-    else if (step === 'summary') setStep('finances')
+  const nextStep = () => {
+    if (currentStep < STEPS.length - 1) {
+      setCurrentStep(prev => prev + 1)
+    }
+  }
+
+  const prevStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(prev => prev - 1)
+    }
+  }
+
+  const handleComplete = () => {
+    setLoading(true)
+    setTimeout(() => {
+      localStorage.setItem('userProfile', JSON.stringify(profile))
+      localStorage.setItem('isAuthenticated', 'true')
+      localStorage.setItem('user', JSON.stringify({ email: profile.email, name: profile.name }))
+      router.push('/dashboard')
+    }, 1500)
+  }
+
+  const renderStep = () => {
+    const step = STEPS[currentStep]
+    
+    switch (step.id) {
+      case 'basic':
+        return (
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <div className="flex justify-center mb-4">
+                <Image 
+                  src="/NEXURA_LOGO-Photoroom.png" 
+                  alt="NEXURA" 
+                  width={240} 
+                  height={85} 
+                  className="object-contain"
+                />
+              </div>
+              <h2 className="text-2xl font-bold text-white mb-2">Create Your Profile</h2>
+              <p className="text-slate-400">Let's get started with your basic information</p>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm text-slate-400 mb-2 block">Full Name</label>
+                <input
+                  type="text"
+                  value={profile.name}
+                  onChange={(e) => updateProfile({ name: e.target.value })}
+                  className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:border-cyan-500 focus:outline-none"
+                  placeholder="Enter your name"
+                />
+              </div>
+              <div>
+                <label className="text-sm text-slate-400 mb-2 block">Email Address</label>
+                <input
+                  type="email"
+                  value={profile.email}
+                  onChange={(e) => updateProfile({ email: e.target.value })}
+                  className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:border-cyan-500 focus:outline-none"
+                  placeholder="Enter your email"
+                />
+              </div>
+              <div>
+                <label className="text-sm text-slate-400 mb-2 block">Password</label>
+                <input
+                  type="password"
+                  value={profile.password}
+                  onChange={(e) => updateProfile({ password: e.target.value })}
+                  className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:border-cyan-500 focus:outline-none"
+                  placeholder="Create a password"
+                />
+              </div>
+              <div>
+                <label className="text-sm text-slate-400 mb-2 block">Age</label>
+                <input
+                  type="number"
+                  value={profile.age}
+                  onChange={(e) => updateProfile({ age: parseInt(e.target.value) })}
+                  className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:border-cyan-500 focus:outline-none"
+                  min="18" max="100"
+                />
+              </div>
+            </div>
+          </div>
+        )
+
+      case 'assessment':
+        return (
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-white mb-2">Life Assessment</h2>
+              <p className="text-slate-400">Rate your current satisfaction in each area (1-10)</p>
+            </div>
+            <div className="space-y-6">
+              {LIFE_AREAS.map((area) => {
+                const value = profile.lifeAreas[area.key as keyof typeof profile.lifeAreas]
+                return (
+                  <div key={area.key} className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <area.icon className={area.color} size={20} />
+                        <span className="text-white font-medium">{area.label}</span>
+                      </div>
+                      <span className={`text-xl font-bold ${area.color}`}>{value}</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="1" max="10" step="1"
+                      value={value}
+                      onChange={(e) => updateProfile({
+                        lifeAreas: { ...profile.lifeAreas, [area.key]: parseInt(e.target.value) }
+                      })}
+                      className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer"
+                    />
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )
+
+      case 'goals':
+        return (
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-white mb-2">Mission Objectives</h2>
+              <p className="text-slate-400">Select 3-5 primary optimization targets</p>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {GOALS.map((goal) => {
+                const isSelected = profile.primaryGoals.includes(goal)
+                return (
+                  <motion.button
+                    key={goal}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => {
+                      const goals = isSelected 
+                        ? profile.primaryGoals.filter(g => g !== goal)
+                        : [...profile.primaryGoals, goal].slice(0, 5)
+                      updateProfile({ primaryGoals: goals })
+                    }}
+                    className={`p-4 border rounded-lg text-left transition-all font-mono ${
+                      isSelected 
+                        ? 'border-cyan-500 bg-cyan-950/30 text-cyan-400' 
+                        : 'border-slate-700 bg-slate-900/50 text-slate-300 hover:border-slate-600'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium">{goal}</span>
+                      {isSelected && <CheckCircle2 size={16} />}
+                    </div>
+                  </motion.button>
+                )
+              })}
+            </div>
+            <div className="text-center text-sm text-slate-500 font-mono">
+              SELECTED: {profile.primaryGoals.length}/5
+            </div>
+          </div>
+        )
+
+      case 'habits':
+        return (
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-white mb-2">Active Protocols</h2>
+              <p className="text-slate-400">Select currently running behavioral patterns</p>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {HABITS.map((habit) => {
+                const isSelected = profile.currentHabits.includes(habit)
+                return (
+                  <motion.button
+                    key={habit}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => {
+                      const habits = isSelected 
+                        ? profile.currentHabits.filter(h => h !== habit)
+                        : [...profile.currentHabits, habit]
+                      updateProfile({ currentHabits: habits })
+                    }}
+                    className={`p-4 border rounded-lg text-left transition-all font-mono ${
+                      isSelected 
+                        ? 'border-emerald-500 bg-emerald-950/30 text-emerald-400' 
+                        : 'border-slate-700 bg-slate-900/50 text-slate-300 hover:border-slate-600'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium">{habit}</span>
+                      {isSelected && <CheckCircle2 size={16} />}
+                    </div>
+                  </motion.button>
+                )
+              })}
+            </div>
+          </div>
+        )
+
+      case 'preferences':
+        return (
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-white mb-2">Preferences</h2>
+              <p className="text-slate-400">Configure your personal settings</p>
+            </div>
+            <div className="space-y-6">
+              <div>
+                <label className="text-sm text-slate-400 mb-3 block">Monthly Budget (₹)</label>
+                <input
+                  type="number"
+                  value={profile.budget}
+                  onChange={(e) => updateProfile({ budget: parseInt(e.target.value) })}
+                  className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:border-cyan-500 focus:outline-none"
+                  placeholder="15000"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm text-slate-400 mb-3 block">Wake Up Time</label>
+                  <input
+                    type="time"
+                    value={profile.wakeTime}
+                    onChange={(e) => updateProfile({ wakeTime: e.target.value })}
+                    className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:border-cyan-500 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm text-slate-400 mb-3 block">Bed Time</label>
+                  <input
+                    type="time"
+                    value={profile.bedTime}
+                    onChange={(e) => updateProfile({ bedTime: e.target.value })}
+                    className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:border-cyan-500 focus:outline-none"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="text-sm text-slate-400 mb-3 block">AI Coaching Style</label>
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { key: 'supportive', label: 'Supportive', desc: 'Encouraging' },
+                    { key: 'challenging', label: 'Challenging', desc: 'Push harder' },
+                    { key: 'analytical', label: 'Analytical', desc: 'Data-focused' }
+                  ].map((type) => (
+                    <button
+                      key={type.key}
+                      onClick={() => updateProfile({ aiPersonality: type.key as any })}
+                      className={`p-4 border rounded-lg text-center transition-all ${
+                        profile.aiPersonality === type.key
+                          ? 'border-purple-500 bg-purple-950/30 text-purple-400'
+                          : 'border-slate-700 bg-slate-900/50 text-slate-300 hover:border-slate-600'
+                      }`}
+                    >
+                      <div className="font-medium text-sm">{type.label}</div>
+                      <div className="text-xs text-slate-500 mt-1">{type.desc}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )
+
+      case 'complete':
+        return (
+          <div className="text-center space-y-6">
+            <div className="w-20 h-20 mx-auto bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-full flex items-center justify-center">
+              <CheckCircle2 className="text-white" size={32} />
+            </div>
+            <h2 className="text-3xl font-bold text-white">Profile Complete!</h2>
+            <p className="text-lg text-slate-300">
+              Your NEXURA profile is ready. Let's start your journey!
+            </p>
+            <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-6 space-y-3">
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-400">Life Areas:</span>
+                <span className="text-cyan-400">{LIFE_AREAS.length}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-400">Goals Set:</span>
+                <span className="text-emerald-400">{profile.primaryGoals.length}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-400">Current Habits:</span>
+                <span className="text-purple-400">{profile.currentHabits.length}</span>
+              </div>
+            </div>
+            {loading && (
+              <div className="text-cyan-400 text-sm animate-pulse">
+                Setting up your dashboard...
+              </div>
+            )}
+          </div>
+        )
+
+      default:
+        return null
+    }
+  }
+
+  const canProceed = () => {
+    switch (STEPS[currentStep].id) {
+      case 'basic': return profile.name && profile.email && profile.password
+      case 'assessment': return true
+      case 'goals': return profile.primaryGoals.length >= 3
+      case 'habits': return true
+      case 'preferences': return true
+      case 'complete': return true
+      default: return false
+    }
   }
 
   return (
-    <div className="min-h-screen bg-[#050505] text-slate-200 font-sans selection:bg-cyan-500/30 overflow-x-hidden flex items-center justify-center px-4">
-      <div className="fixed inset-0 pointer-events-none opacity-20"
-        style={{ backgroundImage: 'linear-gradient(#1e293b 1px, transparent 1px), linear-gradient(90deg, #1e293b 1px, transparent 1px)', backgroundSize: '40px 40px' }}
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black text-slate-200 font-sans relative">
+      <div className="absolute inset-0 opacity-5"
+        style={{
+          backgroundImage: 'linear-gradient(rgba(34, 211, 238, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(34, 211, 238, 0.3) 1px, transparent 1px)',
+          backgroundSize: '50px 50px'
+        }}
       />
-      <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,#050505_100%)]" />
-      <div className="relative z-10 w-full max-w-xl">
-        <HUDCard className="p-6 sm:p-8">
-          <div className="mb-6">
-            <p className="text-xs font-mono tracking-[0.3em] text-cyan-500 mb-2">NEW PILOT PROTOCOL</p>
-            <h1 className="text-3xl sm:text-4xl font-heading font-bold text-white mb-1">
-              Create your NEXURA profile
-            </h1>
-            <p className="text-sm text-slate-400">
-              A short AI interview to tune habits, money and recommendations.
-            </p>
+
+      <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
+        <div className="w-full max-w-2xl">
+          {/* Progress Bar */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-4">
+              {STEPS.map((step, index) => {
+                const isActive = index === currentStep
+                const isCompleted = index < currentStep
+                const IconComponent = step.icon
+                
+                return (
+                  <div key={step.id} className="flex items-center">
+                    <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all ${
+                      isActive ? 'border-cyan-500 bg-cyan-500/20 text-cyan-400' :
+                      isCompleted ? 'border-emerald-500 bg-emerald-500/20 text-emerald-400' :
+                      'border-slate-700 bg-slate-900/50 text-slate-500'
+                    }`}>
+                      <IconComponent size={16} />
+                    </div>
+                    {index < STEPS.length - 1 && (
+                      <div className={`w-12 h-0.5 mx-2 transition-colors ${
+                        isCompleted ? 'bg-emerald-500' : 'bg-slate-700'
+                      }`} />
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+            <div className="text-center">
+              <span className="text-sm text-slate-400">
+                Step {currentStep + 1} of {STEPS.length}: {STEPS[currentStep].title}
+              </span>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2 mb-6 text-xs font-mono text-slate-400">
-            <div className={`h-1 rounded-full flex-1 ${step === 'profile' ? 'bg-cyan-400' : 'bg-slate-800'}`} />
-            <div className={`h-1 rounded-full flex-1 ${step === 'habits' ? 'bg-cyan-400' : 'bg-slate-800'}`} />
-            <div className={`h-1 rounded-full flex-1 ${step === 'finances' ? 'bg-cyan-400' : 'bg-slate-800'}`} />
-            <div className={`h-1 rounded-full flex-1 ${step === 'summary' ? 'bg-cyan-400' : 'bg-slate-800'}`} />
-          </div>
-
-          {step === 'profile' && (
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-cyan-500/10 border border-cyan-500/40">
-                  <User className="text-cyan-400" size={18} />
-                </div>
-                <div>
-                  <p className="text-xs font-mono tracking-[0.25em] text-cyan-500 uppercase">Step 01</p>
-                  <p className="text-sm text-slate-300">Who is piloting this system?</p>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-wide text-slate-400">Preferred name</label>
-                <input
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded-xl bg-slate-950/60 border border-slate-800 px-4 py-3 text-sm text-slate-100 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/30"
-                  placeholder="Alex"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-wide text-slate-400">What do you mainly do?</label>
-                <input
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                  className="w-full rounded-xl bg-slate-950/60 border border-slate-800 px-4 py-3 text-sm text-slate-100 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/30"
-                  placeholder="Student, engineer, creator, freelancer..."
-                />
-              </div>
-            </div>
-          )}
-
-          {step === 'habits' && (
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-emerald-500/10 border border-emerald-500/40">
-                  <Sparkles className="text-emerald-400" size={18} />
-                </div>
-                <div>
-                  <p className="text-xs font-mono tracking-[0.25em] text-emerald-400 uppercase">Step 02</p>
-                  <p className="text-sm text-slate-300">Habits and energy patterns</p>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-wide text-slate-400">
-                  What is your main goal for the next 3 months?
-                </label>
-                <input
-                  value={goal}
-                  onChange={(e) => setGoal(e.target.value)}
-                  className="w-full rounded-xl bg-slate-950/60 border border-slate-800 px-4 py-3 text-sm text-slate-100 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30"
-                  placeholder="Example: clear debt, get fit, ship a project..."
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-wide text-slate-400">
-                  When do you usually feel most awake or focused?
-                </label>
-                <input
-                  value={energyPattern}
-                  onChange={(e) => setEnergyPattern(e.target.value)}
-                  className="w-full rounded-xl bg-slate-950/60 border border-slate-800 px-4 py-3 text-sm text-slate-100 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30"
-                  placeholder="Early morning, late night, depends on the day..."
-                />
-              </div>
-            </div>
-          )}
-
-          {step === 'finances' && (
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-fuchsia-500/10 border border-fuchsia-500/40">
-                  <Wallet className="text-fuchsia-400" size={18} />
-                </div>
-                <div>
-                  <p className="text-xs font-mono tracking-[0.25em] text-fuchsia-400 uppercase">Step 03</p>
-                  <p className="text-sm text-slate-300">Money behavior snapshot</p>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-wide text-slate-400">
-                  How do you currently feel about your money?
-                </label>
-                <input
-                  value={moneyFeeling}
-                  onChange={(e) => setMoneyFeeling(e.target.value)}
-                  className="w-full rounded-xl bg-slate-950/60 border border-slate-800 px-4 py-3 text-sm text-slate-100 outline-none focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-500/30"
-                  placeholder="Calm, stressed, curious, tracking everything..."
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-wide text-slate-400">
-                  What best describes how you usually spend?
-                </label>
-                <input
-                  value={spendStyle}
-                  onChange={(e) => setSpendStyle(e.target.value)}
-                  className="w-full rounded-xl bg-slate-950/60 border border-slate-800 px-4 py-3 text-sm text-slate-100 outline-none focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-500/30"
-                  placeholder="Planned, impulsive, routine-based, random..."
-                />
-              </div>
-            </div>
-          )}
-
-          {step === 'summary' && (
-            <div className="space-y-5">
-              <div className="flex items-center gap-3 mb-1">
-                <div className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-cyan-500/10 border border-cyan-500/40">
-                  <Brain className="text-cyan-400" size={18} />
-                </div>
-                <div>
-                  <p className="text-xs font-mono tracking-[0.25em] text-cyan-500 uppercase">AI BRIEFING</p>
-                  <p className="text-sm text-slate-300">NEXURA preloads your starting protocol</p>
-                </div>
-              </div>
-              <div className="rounded-2xl border border-slate-800/80 bg-slate-950/60 px-4 py-3.5 text-sm text-slate-200">
-                <p className="text-xs font-mono text-slate-500 mb-1">Assigned ID</p>
-                <p className="text-lg font-semibold text-cyan-400">{suggestedId}</p>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="rounded-2xl border border-slate-800/80 bg-slate-950/60 px-4 py-3.5 text-sm text-slate-200">
-                  <p className="text-xs font-mono text-slate-500 mb-1">Behavior focus</p>
-                  <p>{primaryRecommendation}</p>
-                </div>
-                <div className="rounded-2xl border border-slate-800/80 bg-slate-950/60 px-4 py-3.5 text-sm text-slate-200">
-                  <p className="text-xs font-mono text-slate-500 mb-1">Money focus</p>
-                  <p>{spendInsight}</p>
-                </div>
-              </div>
-              <p className="text-xs text-slate-500">
-                This is a local preview only. When you connect real data, NEXURA will refine this protocol from your
-                actual habits and transactions.
-              </p>
-            </div>
-          )}
-
-          <div className="mt-8 flex items-center justify-between gap-3">
-            <button
-              type="button"
-              onClick={handleBack}
-              disabled={step === 'profile'}
-              className="text-xs sm:text-sm rounded-xl border border-slate-700 bg-slate-950/60 px-4 py-2.5 text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed hover:border-slate-500"
+          {/* Main Content */}
+          <HUDCard className="p-6 md:p-8 min-h-[500px]">
+            <motion.div
+              key={currentStep}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
             >
+              {renderStep()}
+            </motion.div>
+          </HUDCard>
+
+          {/* Navigation */}
+          <div className="flex justify-between mt-6">
+            <button
+              onClick={prevStep}
+              disabled={currentStep === 0}
+              className="flex items-center gap-2 px-6 py-3 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
+            >
+              <ChevronLeft size={16} />
               Back
             </button>
-            {step !== 'summary' ? (
+            
+            {currentStep === STEPS.length - 1 ? (
               <button
-                type="button"
-                onClick={handleNext}
-                disabled={!canContinue}
-                className="ml-auto inline-flex items-center justify-center rounded-xl bg-cyan-500 text-slate-950 font-semibold text-xs sm:text-sm px-5 py-2.5 hover:bg-cyan-400 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                onClick={handleComplete}
+                disabled={loading}
+                className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 disabled:opacity-50 text-white rounded-lg transition-all font-bold"
               >
-                Next
+                {loading ? 'Creating...' : 'Get Started'}
+                <ArrowRight size={16} />
               </button>
             ) : (
-              <Link
-                href="/"
-                className="ml-auto inline-flex items-center justify-center rounded-xl bg-emerald-500 text-slate-950 font-semibold text-xs sm:text-sm px-5 py-2.5 hover:bg-emerald-400 transition-colors"
+              <button
+                onClick={nextStep}
+                disabled={!canProceed()}
+                className="flex items-center gap-2 px-6 py-3 bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
               >
-                Launch dashboard
-              </Link>
+                Continue
+                <ChevronRight size={16} />
+              </button>
             )}
           </div>
-
-          <div className="mt-6 flex items-center justify-between text-xs text-slate-400">
-            <span className="opacity-70">Already have access?</span>
-            <Link href="/login" className="text-cyan-400 hover:text-cyan-300 font-medium">
-              Log in instead
-            </Link>
-          </div>
-        </HUDCard>
+        </div>
       </div>
     </div>
   )
+}

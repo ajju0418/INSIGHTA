@@ -5,6 +5,7 @@ import { PerformanceRadar } from '@/components/PerformanceRadar'
 import { DailyNexus } from '@/components/DailyNexus'
 import { RecentExpenses } from '@/components/RecentExpenses'
 import { HUDCard } from '@/components/HUDCard'
+import Image from 'next/image'
 import { Activity, TrendingUp, Zap, Wallet, Terminal } from 'lucide-react'
 
 export function Home() {
@@ -30,7 +31,13 @@ export function Home() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 pt-8 pb-24">
         <div className="mb-10 pt-4 pb-6 border-b border-slate-800">
           <div className="flex items-center gap-3 mb-4">
-            <Terminal size={20} className="text-cyan-500" />
+            <Image 
+              src="/NEXURA_LOGO-Photoroom.png" 
+              alt="NEXURA" 
+              width={160} 
+              height={55} 
+              className="object-contain"
+            />
             <span className="text-base font-mono text-cyan-500 tracking-[0.3em] font-bold uppercase">SYSTEM.ONLINE</span>
             <div className="flex gap-1 ml-2">
               <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
