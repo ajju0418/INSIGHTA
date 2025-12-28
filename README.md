@@ -1,303 +1,333 @@
-# NEXURA
-*Personal Life Analytics & Habit Tracking Platform*
+# NEXURA - Behavioral Intelligence System
 
-## 🎯 Core Concept
+**AI-Powered Personal Analytics & Habit Tracking Platform**
 
-INSIGHTA is a futuristic personal analytics platform that transforms habit tracking and expense monitoring into an intelligent, data-driven experience. Built with Next.js 15 and TypeScript, it combines behavioral psychology with modern UI/UX design to create a comprehensive life optimization tool.
-
-### Vision
-Transform daily habits and financial decisions into actionable insights through AI-powered analytics and beautiful visualizations.
-
-### Key Philosophy
-- **Minimal Professional Design**: Clean, distraction-free interface focusing on data clarity
-- **Behavioral Intelligence**: AI-driven insights that understand patterns and suggest improvements
-- **Holistic Life View**: Unified dashboard combining wellness, productivity, and financial health
-- **Future-Forward UX**: 3D interactions and glassmorphism effects for engaging user experience
-
-## 🏗️ Architecture Overview
-
-### Technology Stack
-- **Framework**: Next.js 15 with App Router
-- **Language**: TypeScript (strict mode)
-- **Styling**: Tailwind CSS with custom utilities
-- **Animations**: Framer Motion for smooth transitions
-- **Build**: Static export for optimal performance
-- **Currency**: Indian Rupees (₹) with proper localization
-
-### Project Structure
-```
-INSIGHTA/
-├── app/
-│   ├── layout.tsx          # Root layout with global styles
-│   ├── page.tsx            # Main entry point
-│   └── globals.css         # Global styles and theme
-├── components/
-│   ├── App.tsx             # Navigation controller
-│   ├── Home.tsx            # Dashboard interface
-│   ├── LogInterface.tsx    # Habit/expense logging
-│   ├── Patterns.tsx        # Behavioral analytics
-│   ├── Review.tsx          # Weekly performance review
-│   └── Navigation.tsx      # 3D floating navigation
-├── next.config.js          # Next.js configuration
-├── tailwind.config.js      # Tailwind customization
-└── tsconfig.json           # TypeScript configuration
-```
-
-## 🎨 Design System
-
-### Theme Architecture
-- **Primary Palette**: Dark slate gradients (900-800-900)
-- **Accent Colors**: Emerald, Blue, Purple, Pink gradients
-- **Typography**: Light, clean fonts with proper hierarchy
-- **Effects**: Glassmorphism with backdrop blur and subtle borders
-- **Animations**: Smooth transitions with spring physics
-
-### Visual Elements
-- **Navigation**: 3D floating orbs with perspective transforms
-- **Cards**: Glass-morphic containers with gradient borders
-- **Metrics**: Circular progress indicators with animated fills
-- **Backgrounds**: Animated gradient orbs with blur effects
-- **Icons**: Minimal dot-based indicators (no emojis)
-
-## 📱 Page Breakdown
-
-### 1. Home Dashboard (`Home.tsx`)
-**Purpose**: Central command center providing daily overview and quick insights
-
-**Features**:
-- **Dynamic Greeting**: Time-based personalized welcome message
-- **Life Metrics**: Three core scores (Wellness, Productivity, Financial Health)
-  - Real-time progress bars with gradient animations
-  - Change indicators (+/-) with color coding
-  - Hover effects revealing detailed descriptions
-- **Habit Tracking Circle**: Animated SVG showing daily completion percentage
-- **Today's Habits**: Interactive list with completion status and streak counters
-- **Recent Expenses**: Financial activity with impact categorization (positive/negative/neutral)
-- **Quick Stats**: Total spending and habit completion rates
-
-**Design Elements**:
-- Animated background orbs with pulse effects
-- Glassmorphic cards with backdrop blur
-- Gradient text effects for headings
-- Smooth hover animations and state transitions
-
-### 2. Log Interface (`LogInterface.tsx`)
-**Purpose**: Streamlined input system for habits and expenses with AI assistance
-
-**Features**:
-- **Dual Mode Interface**: Toggle between habit logging and expense tracking
-- **Visual Selection**: Icon-based habit categories for quick selection
-- **Smart Suggestions**: AI-powered recommendations based on patterns
-- **Quick Entry**: Minimal friction input with auto-complete
-- **Impact Assessment**: Real-time feedback on habit/expense impact
-- **Streak Tracking**: Visual indicators for habit consistency
-
-**UX Flow**:
-1. Select logging mode (habits/expenses)
-2. Choose from visual categories or custom entry
-3. Add details with AI suggestions
-4. Confirm with impact preview
-5. Instant feedback and streak updates
-
-### 3. Patterns (Behavioral Analytics) (`Patterns.tsx`)
-**Purpose**: Deep behavioral insights through data visualization and AI analysis
-
-**Features**:
-- **Timeline Visualization**: Interactive charts showing habit trends over time
-- **Pattern Recognition**: AI-identified behavioral patterns and correlations
-- **Performance Analytics**: Detailed breakdowns of success rates and improvements
-- **Predictive Insights**: Future trend predictions based on current patterns
-- **Correlation Matrix**: Visual connections between different habits and outcomes
-- **Optimization Suggestions**: Data-driven recommendations for improvement
-
-**Analytics Types**:
-- Weekly/Monthly trend analysis
-- Habit correlation mapping
-- Peak performance time identification
-- Behavioral trigger analysis
-- Success pattern recognition
-
-### 4. Review (`Review.tsx`)
-**Purpose**: Comprehensive weekly performance analysis with actionable insights
-
-**Features**:
-- **Weekly Summary**: Complete overview of habits, expenses, and achievements
-- **Performance Metrics**: Detailed scoring across all life areas
-- **Spending Analysis**: Financial health assessment with category breakdowns
-- **Habit Analysis**: Success rates, streak analysis, and improvement areas
-- **AI Insights**: Personalized recommendations based on weekly data
-- **Goal Tracking**: Progress toward long-term objectives
-
-**Review Components**:
-- Achievement highlights and areas for improvement
-- Financial health score with spending pattern analysis
-- Habit consistency ratings with streak preservation tips
-- Comparative analysis with previous weeks
-- Action items for the upcoming week
-
-### 5. Navigation (`Navigation.tsx`)
-**Purpose**: Immersive 3D navigation system with floating orbs
-
-**Features**:
-- **3D Floating Orbs**: Perspective-transformed navigation elements
-- **Hover Effects**: Dynamic scaling and glow effects on interaction
-- **No Text Labels**: Clean, icon-only navigation for minimal distraction
-- **Smooth Transitions**: Framer Motion animations for state changes
-- **Active State**: Visual feedback for current page selection
-
-**Navigation Elements**:
-- Home: Central dashboard access
-- Log: Quick habit/expense entry
-- Patterns: Analytics and insights
-- Review: Weekly performance analysis
-
-## 🔄 Workflow & User Journey
-
-### Daily Workflow
-1. **Morning Check-in**: View dashboard with daily metrics and habit goals
-2. **Activity Logging**: Log habits and expenses throughout the day
-3. **Real-time Feedback**: Receive instant insights and streak updates
-4. **Evening Review**: Check daily completion and prepare for tomorrow
-
-### Weekly Workflow
-1. **Performance Analysis**: Deep dive into weekly patterns and trends
-2. **Insight Generation**: AI analysis of behavioral patterns
-3. **Goal Adjustment**: Refine habits and financial targets based on data
-4. **Planning**: Set intentions and strategies for the upcoming week
-
-### Data Flow
-```
-User Input → Real-time Processing → Pattern Recognition → Insight Generation → Actionable Recommendations
-```
-
-## 🎯 Key Features
-
-### Intelligent Analytics
-- **Pattern Recognition**: AI identifies behavioral trends and correlations
-- **Predictive Modeling**: Future performance predictions based on current data
-- **Personalized Insights**: Tailored recommendations for individual improvement
-- **Impact Assessment**: Real-time evaluation of habit and expense effects
-
-### User Experience
-- **Minimal Friction**: Quick logging with smart defaults and suggestions
-- **Visual Feedback**: Immediate confirmation and progress visualization
-- **Contextual Guidance**: Situational tips and recommendations
-- **Seamless Navigation**: Fluid transitions between different app sections
-
-### Data Visualization
-- **Interactive Charts**: Engaging visual representations of personal data
-- **Progress Indicators**: Clear visual feedback on goal achievement
-- **Trend Analysis**: Historical data presentation with future projections
-- **Comparative Views**: Side-by-side analysis of different time periods
-
-## 🛠️ Technical Implementation
-
-### State Management
-- React hooks for local component state
-- Prop drilling for simple data flow
-- Context API for global app state (future enhancement)
-
-### Performance Optimization
-- Static site generation for fast loading
-- Component lazy loading for large datasets
-- Optimized animations with Framer Motion
-- Efficient re-rendering with React best practices
-
-### Responsive Design
-- Mobile-first approach with Tailwind breakpoints
-- Adaptive layouts for different screen sizes
-- Touch-friendly interactions for mobile devices
-- Progressive enhancement for desktop features
-
-### Accessibility
-- Semantic HTML structure
-- ARIA labels for interactive elements
-- Keyboard navigation support
-- High contrast ratios for readability
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js 18+ 
-- npm or yarn package manager
-
-### Installation
-```bash
-# Clone the repository
-git clone <repository-url>
-cd INSIGHTA
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-```
-
-### Development Commands
-```bash
-npm run dev      # Start development server
-npm run build    # Build for production
-npm run start    # Start production server
-npm run lint     # Run ESLint
-```
-
-## 🎨 Customization
-
-### Theme Modification
-Edit `tailwind.config.js` to customize colors, spacing, and animations:
-```javascript
-theme: {
-  extend: {
-    colors: {
-      // Custom color palette
-    },
-    animation: {
-      // Custom animations
-    }
-  }
-}
-```
-
-### Component Styling
-Global styles in `app/globals.css` with utility classes for:
-- Glassmorphism effects
-- Gradient backgrounds
-- Animation keyframes
-- Custom scrollbars
-
-## 🔮 Future Enhancements
-
-### Planned Features
-- **Data Persistence**: Local storage and cloud sync
-- **Advanced Analytics**: Machine learning insights
-- **Social Features**: Community challenges and sharing
-- **Integration**: Wearable device connectivity
-- **Customization**: Personalized themes and layouts
-
-### Technical Roadmap
-- Database integration (PostgreSQL/MongoDB)
-- Authentication system (NextAuth.js)
-- API development for data management
-- Progressive Web App (PWA) capabilities
-- Real-time notifications and reminders
-
-## 📊 Performance Metrics
-
-### Core Web Vitals
-- **LCP**: < 2.5s (Largest Contentful Paint)
-- **FID**: < 100ms (First Input Delay)
-- **CLS**: < 0.1 (Cumulative Layout Shift)
-
-### Optimization Strategies
-- Static generation for instant loading
-- Image optimization with Next.js
-- Code splitting for reduced bundle size
-- Efficient CSS with Tailwind purging
+A full-stack application for tracking habits, managing goals, analyzing expenses, and gaining behavioral insights through AI-driven pattern recognition.
 
 ---
 
-*INSIGHTA - Transform your daily habits into extraordinary results through intelligent analytics and beautiful design.*
+## 🏗️ Project Structure
+
+```
+NEXURA/
+├── frontend/          # Next.js 15 + React 18 + TypeScript
+├── backend/           # NestJS + Prisma + PostgreSQL
+├── docs/              # Documentation
+└── package.json       # Monorepo workspace configuration
+```
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- **Node.js** 18+ and npm
+- **PostgreSQL** 15+
+- **Redis** (optional, for rate limiting)
+
+### Installation
+
+```bash
+# Install all dependencies (root + frontend + backend)
+npm run install:all
+
+# Or install individually
+npm install          # Root dependencies
+cd frontend && npm install
+cd backend && npm install
+```
+
+### Development
+
+```bash
+# Start both frontend and backend concurrently
+npm run dev
+
+# Or start individually
+npm run dev:frontend  # Frontend on http://localhost:3001
+npm run dev:backend   # Backend on http://localhost:3000
+```
+
+### Backend Setup
+
+```bash
+cd backend
+
+# Copy environment variables
+cp .env.example .env
+
+# Edit .env with your database credentials
+
+# Generate Prisma client
+npx prisma generate
+
+# Run database migrations
+npx prisma migrate dev
+
+# Seed database with test data
+npx prisma:seed
+```
+
+### Frontend Setup
+
+```bash
+cd frontend
+
+# Copy environment variables
+cp .env.local.example .env.local
+
+# Edit .env.local
+# NEXT_PUBLIC_API_URL=http://localhost:3000/api
+```
+
+---
+
+## 📦 Tech Stack
+
+### Frontend
+- **Framework:** Next.js 15 (App Router)
+- **UI:** React 18, TypeScript
+- **Styling:** TailwindCSS
+- **Animations:** Framer Motion
+- **Charts:** Recharts
+- **Icons:** Lucide React
+
+### Backend
+- **Framework:** NestJS
+- **Database:** PostgreSQL 15
+- **ORM:** Prisma
+- **Authentication:** JWT + Refresh Tokens
+- **Validation:** Zod
+- **Documentation:** Swagger/OpenAPI
+- **Testing:** Jest + Supertest
+
+---
+
+## 🎯 Features
+
+### ✅ Implemented (Backend)
+
+**Phase 1: Authentication & Infrastructure**
+- ✅ User signup and login
+- ✅ JWT authentication with refresh tokens
+- ✅ Session management
+- ✅ User settings
+- ✅ Onboarding flow
+
+**Phase 2: Core Business Logic**
+- ✅ Habits CRUD with streak calculation
+- ✅ Goals CRUD with auto-completion
+- ✅ Expenses CRUD with analytics
+- ✅ Timeline event aggregation
+- ✅ Ownership enforcement
+- ✅ Soft delete support
+
+### 🚧 In Progress (Frontend)
+
+- ⚠️ Backend API integration (currently using mock data)
+- ⚠️ State management (needs Zustand implementation)
+- ⚠️ Real-time data synchronization
+- ⚠️ Error handling and validation
+
+### 📋 Planned (Phase 3)
+
+- [ ] AI-powered insights generation
+- [ ] Pattern recognition and predictions
+- [ ] Advanced analytics dashboard
+- [ ] Notifications system
+- [ ] Data export/import
+- [ ] Mobile app (React Native)
+
+---
+
+## 📚 Documentation
+
+- [Frontend README](./frontend/README.md)
+- [Backend README](./backend/README.md)
+- [Frontend Audit Report](./docs/frontend_audit_report.md)
+- [Backend Requirements](./docs/backend_requirements.md)
+- [Phase 1 Walkthrough](./docs/phase1_walkthrough.md)
+- [Phase 2 Walkthrough](./docs/phase2_walkthrough.md)
+- [API Documentation](http://localhost:3000/api/docs) (when backend is running)
+
+---
+
+## 🔧 Available Scripts
+
+### Root Level
+
+```bash
+npm run dev              # Start both frontend and backend
+npm run dev:frontend     # Start frontend only
+npm run dev:backend      # Start backend only
+npm run build            # Build both projects
+npm run install:all      # Install all dependencies
+npm run clean            # Clean all node_modules and build files
+npm run lint             # Lint both projects
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm run dev              # Development server (port 3001)
+npm run build            # Production build
+npm start                # Start production server
+npm run lint             # Run ESLint
+npm run export           # Export static site
+```
+
+### Backend
+
+```bash
+cd backend
+npm run start:dev        # Development server (port 3000)
+npm run build            # Production build
+npm run start:prod       # Start production server
+npm run test             # Run tests
+npm run test:e2e         # Run E2E tests
+npx prisma studio        # Open database GUI
+npx prisma migrate dev   # Run migrations
+```
+
+---
+
+## 🗄️ Database Schema
+
+### Core Entities
+
+1. **User** - User accounts and profiles
+2. **AuthSession** - JWT session management
+3. **UserSettings** - User preferences
+4. **OnboardingProfile** - Initial user assessment
+5. **Habit** - User habits with streak tracking
+6. **HabitCompletion** - Individual completion records
+7. **Goal** - User goals with progress tracking
+8. **Expense** - Financial tracking
+9. **TimelineEvent** - Polymorphic event aggregation
+
+See [Backend README](./backend/README.md) for detailed schema documentation.
+
+---
+
+## 🔐 Environment Variables
+
+### Frontend (.env.local)
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
+```
+
+### Backend (.env)
+
+```env
+NODE_ENV=development
+PORT=3000
+DATABASE_URL="postgresql://user:password@localhost:5432/nexura_db"
+JWT_SECRET=your-secret-key
+REFRESH_TOKEN_SECRET=your-refresh-secret
+REDIS_HOST=localhost
+REDIS_PORT=6379
+```
+
+See `.env.example` files in each directory for complete configuration.
+
+---
+
+## 🧪 Testing
+
+### Backend Tests
+
+```bash
+cd backend
+
+# Unit tests
+npm test
+
+# E2E tests
+npm run test:e2e
+
+# Test coverage
+npm run test:cov
+```
+
+### Test Credentials
+
+After running `npx prisma:seed`:
+
+```
+Email: admin@nexura.com
+Password: nexura123
+```
+
+---
+
+## 🚀 Deployment
+
+### Frontend (Vercel/Netlify)
+
+```bash
+cd frontend
+npm run build
+npm run export  # For static export
+```
+
+### Backend (Railway/Render/AWS)
+
+```bash
+cd backend
+npm run build
+npm run start:prod
+```
+
+### Docker (Coming Soon)
+
+```bash
+docker-compose up
+```
+
+---
+
+## 📊 Project Status
+
+| Component | Status | Completion |
+|-----------|--------|------------|
+| **Backend API** | ✅ Production Ready | 100% |
+| **Database Schema** | ✅ Complete | 100% |
+| **Authentication** | ✅ Complete | 100% |
+| **Business Logic** | ✅ Complete | 100% |
+| **Frontend UI** | ✅ Complete | 100% |
+| **API Integration** | ⚠️ Needs Work | 30% |
+| **State Management** | ⚠️ Needs Work | 20% |
+| **Testing** | ⚠️ Partial | 60% |
+| **Documentation** | ✅ Complete | 100% |
+
+---
+
+## 🤝 Contributing
+
+1. Create feature branch
+2. Make changes
+3. Write/update tests
+4. Update documentation
+5. Submit pull request
+
+---
+
+## 📄 License
+
+Private - NEXURA Team
+
+---
+
+## 🆘 Support
+
+For issues or questions:
+- Check documentation in `/docs`
+- Review API docs at http://localhost:3000/api/docs
+- See audit reports for known issues
+
+---
+
+**Built with ❤️ by the NEXURA Team**
